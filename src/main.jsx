@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import PasswordRecovery from "./pages/PasswordRecovery.jsx";
 
 // Configure the react-router-dom
 const router = createBrowserRouter([
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/create-new-account",
     element: <Signup />,
+  },
+  {
+    path: "/password-recovery",
+    element: <PasswordRecovery />,
   },
   {
     path: "*",
