@@ -1,0 +1,15 @@
+/* TailwindCSS Configs */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+.inter-heading {
+  font-family: "Inter", sans-serif;
+}
