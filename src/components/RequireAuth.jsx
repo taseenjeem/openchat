@@ -16,12 +16,12 @@ const RequireAuth = ({ children }) => {
 
   // Check user's authentication status
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const authenticationCheck = auth.onAuthStateChanged((user) => {
       setUser(user);
       setLoading(false);
     });
 
-    return unsubscribe;
+    return authenticationCheck;
   }, [auth]);
 
   if (loading) {
