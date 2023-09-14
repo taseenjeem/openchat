@@ -24,10 +24,26 @@ const Signup = () => {
   const handleGoogleSignUp = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result);
+        if (result) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Account created successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       })
       .catch((error) => {
-        console.log(error);
+        if (error.message === "Firebase: Error (auth/popup-closed-by-user).") {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "You closed the pop up",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       });
   };
 
