@@ -63,7 +63,28 @@ const Signup = () => {
 
         e.target.reset();
       } catch (error) {
-        console.log(error);
+        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "This email is already in use. Try with different email",
+            showConfirmButton: true,
+          });
+          e.target.reset();
+        }
+
+        if (
+          error.message ===
+          "Firebase: Password should be at least 6 characters (auth/weak-password)."
+        ) {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Password should be at least 6 characters",
+            showConfirmButton: true,
+          });
+          e.target.reset();
+        }
       }
     } else {
       Swal.fire({
@@ -114,6 +135,7 @@ const Signup = () => {
                     name="userName"
                     placeholder="Type here"
                     className="input input-bordered w-full"
+                    required
                   />
                 </div>
                 <div className="form-control w-full my-3">
@@ -125,6 +147,7 @@ const Signup = () => {
                     name="userEmail"
                     placeholder="Type here"
                     className="input input-bordered w-full"
+                    required
                   />
                 </div>
               </div>
@@ -138,6 +161,7 @@ const Signup = () => {
                     name="userPassword"
                     placeholder="Type here"
                     className="input input-bordered w-full"
+                    required
                   />
                 </div>
                 <div className="form-control w-full my-3">
@@ -149,6 +173,7 @@ const Signup = () => {
                     name="confirmPassword"
                     placeholder="Type here"
                     className="input input-bordered w-full"
+                    required
                   />
                 </div>
               </div>
