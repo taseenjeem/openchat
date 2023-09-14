@@ -1,7 +1,47 @@
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
+import app from "../authentication/firebase.init";
+import Swal from "sweetalert2";
 
 const PasswordRecovery = () => {
+  // Import app from firebase.init.js
+  const auth = getAuth(app);
+
+  // Handle reset password form
+  const handleResetPass = (e) => {
+    e.preventDefault();
+
+    // Extract user's email from the form
+    const userEmail = e.target.userEmail.value;
+
+    // Send a password reset email to the user's email address
+    sendPasswordResetEmail(auth, userEmail)
+      .then(() => {
+        // Password reset email sent successfully
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Email has been sent. Please reset your password",
+          showConfirmButton: true,
+        });
+
+        // Reset the form
+        e.target.reset();
+      })
+      .catch((error) => {
+        console.log(error);
+
+        // Handle any errors that may occur during the password reset process
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Something went wrong. Please try again later",
+          showConfirmButton: true,
+        });
+      });
+  };
+
   return (
     <>
       <div className="h-screen md:flex md:px-0 px-4">
@@ -30,15 +70,17 @@ const PasswordRecovery = () => {
             <p className="text-sm font-normal text-gray-600 mb-7">
               Please recover your password.
             </p>
-            <form>
+            <form onSubmit={handleResetPass}>
               <div className="form-control w-full mb-4">
                 <label className="label">
                   <span className="label-text">Your Existing Email</span>
                 </label>
                 <input
                   type="email"
+                  name="userEmail"
                   placeholder="Type here"
                   className="input input-bordered w-full"
+                  required
                 />
               </div>
               <input
