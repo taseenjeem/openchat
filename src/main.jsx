@@ -10,6 +10,7 @@ import PasswordRecovery from "./pages/PasswordRecovery.jsx";
 import Loading from "./components/Loading";
 import Conversations from "./pages/Conversations";
 import ChatLayout from "./components/ChatLayout";
+import RequireAuth from "./components/RequireAuth";
 
 // Configure the react-router-dom
 const router = createBrowserRouter([
@@ -41,7 +42,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/conversations",
-    element: <Conversations />,
+    element: (
+      <RequireAuth>
+        <Conversations />
+      </RequireAuth>
+    ),
     children: [
       {
         path: "/conversations",
