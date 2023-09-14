@@ -1,6 +1,36 @@
+import { getAuth, signOut } from "firebase/auth";
 import React from "react";
+import app from "../authentication/firebase.init";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  // import app from firebase.init.js
+  const auth = getAuth(app);
+
+  // Navigate after logout
+  const navigate = useNavigate();
+
+  // Handle Sign out
+  const handleLogout = () => {
+    // Sign out implementation
+    signOut(auth)
+      .then(() => {
+        // Display a success message to the user
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Logout Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(navigate("/login"));
+  };
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -70,7 +100,33 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+        <button
+          className="btn"
+          onClick={() => document.getElementById("my_modal_5").showModal()}
+        >
+          Log Out
+        </button>
+        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Log Out!</h3>
+            <p className="py-4">
+              Are you sure you want to log out from OpenChat?
+            </p>
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn mr-2 capitalize">Cancel</button>
+                <button
+                  onClick={handleLogout}
+                  className="btn ml-2 capitalize bg-red-500 text-white"
+                >
+                  Confirm
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
     </div>
   );

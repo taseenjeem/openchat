@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import app from "../authentication/firebase.init";
 import {
@@ -16,6 +16,9 @@ import Loading from "../components/Loading";
 const Signup = () => {
   // terms checkbox
   const [check, setCheck] = useState(false);
+
+  // Navigate after registration
+  const navigate = useNavigate();
 
   // Loading state
   const [loading, setLoading] = useState(false);
@@ -122,6 +125,8 @@ const Signup = () => {
       } finally {
         // Stop loading, whether sign up succeeds or fails
         setLoading(false);
+        // Finally navigate to conversation route after successful registration
+        navigate("/conversations");
       }
     } else {
       // Handle the case where the passwords do not match

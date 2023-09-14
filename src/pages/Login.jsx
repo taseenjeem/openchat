@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import { FcGoogle } from "react-icons/fc";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -10,6 +10,9 @@ import Loading from "../components/Loading";
 const Login = () => {
   // Loading state
   const [loading, setLoading] = useState(false);
+
+  // Navigate after login
+  const navigate = useNavigate();
 
   // Import the app from firebase.init.js
   const auth = getAuth(app);
@@ -64,6 +67,8 @@ const Login = () => {
     } finally {
       // Stop loading, whether login succeeds or fails
       setLoading(false);
+      // Finally navigate to conversation route after successful login
+      navigate("/conversations");
     }
   };
 
