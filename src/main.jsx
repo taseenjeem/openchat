@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import PasswordRecovery from "./pages/PasswordRecovery.jsx";
+import Loading from "./components/Loading";
 
 // Configure the react-router-dom
 const router = createBrowserRouter([
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
 
   {
     path: "*",
-    element: <div>this is error page</div>,
+    element: <Loading />,
   },
 ]);
 
