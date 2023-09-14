@@ -1,10 +1,79 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import app from "../authentication/firebase.init";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
+import Swal from "sweetalert2";
 
 const Signup = () => {
   // terms checkbox
   const [check, setCheck] = useState(false);
+
+  // Imported the auth from firebase.init.js
+  const auth = getAuth(app);
+
+  // Sign up with google
+  const provider = new GoogleAuthProvider();
+
+  const handleGoogleSignUp = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // Handle sign up form
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const userName = e.target.userName.value;
+    const userEmail = e.target.userEmail.value;
+    const userPassword = e.target.userPassword.value;
+    const confirmPassword = e.target.confirmPassword.value;
+
+    if (userPassword === confirmPassword) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          userEmail,
+          userPassword
+        );
+        const user = userCredential.user;
+
+        // Update the user's displayName
+        await updateProfile(user, {
+          displayName: userName,
+        });
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Account created successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        e.target.reset();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Your password did not match. Please try again",
+        showConfirmButton: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -34,7 +103,7 @@ const Signup = () => {
             <p className="text-sm font-normal text-gray-600 mb-7">
               Please fill the form for registration.
             </p>
-            <form>
+            <form onSubmit={handleSignUp}>
               <div className="md:flex items-center gap-4">
                 <div className="form-control w-full">
                   <label className="label">
@@ -42,6 +111,7 @@ const Signup = () => {
                   </label>
                   <input
                     type="text"
+                    name="userName"
                     placeholder="Type here"
                     className="input input-bordered w-full"
                   />
@@ -52,6 +122,7 @@ const Signup = () => {
                   </label>
                   <input
                     type="email"
+                    name="userEmail"
                     placeholder="Type here"
                     className="input input-bordered w-full"
                   />
@@ -64,6 +135,7 @@ const Signup = () => {
                   </label>
                   <input
                     type="password"
+                    name="userPassword"
                     placeholder="Type here"
                     className="input input-bordered w-full"
                   />
@@ -74,6 +146,7 @@ const Signup = () => {
                   </label>
                   <input
                     type="password"
+                    name="confirmPassword"
                     placeholder="Type here"
                     className="input input-bordered w-full"
                   />
@@ -106,7 +179,10 @@ const Signup = () => {
               />
             </form>
             <div className="divider">OR</div>
-            <button className="btn btn-outline capitalize w-full">
+            <button
+              onClick={handleGoogleSignUp}
+              className="btn btn-outline capitalize w-full"
+            >
               <FcGoogle className="text-xl" /> Sign up with Google
             </button>
           </div>
