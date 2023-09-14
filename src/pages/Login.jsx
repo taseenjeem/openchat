@@ -11,42 +11,50 @@ const Login = () => {
   const auth = getAuth(app);
 
   // Handle login
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Extract user's email and password from the form
     const userEmail = e.target.userEmail.value;
     const userPassword = e.target.userPassword.value;
 
-    signInWithEmailAndPassword(auth, userEmail, userPassword)
-      .then((result) => {
-        if (result.user) {
-          console.log(result.user);
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Login Successfully",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+    try {
+      // Sign in the user with email and password
+      const result = await signInWithEmailAndPassword(
+        auth,
+        userEmail,
+        userPassword
+      );
 
-          e.target.reset();
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
-        if (
-          error.message === "Firebase: Error (auth/invalid-login-credentials)."
-        ) {
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title:
-              "Wrong email or password. Please check your password or email and try again.",
-            showConfirmButton: true,
-          });
-          e.target.reset();
-        }
-      });
+      if (result.user) {
+        // Display a success message to the user
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Login Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        // Reset the form
+        e.target.reset();
+      }
+    } catch (error) {
+      if (error.code === "auth/invalid-login-credentials") {
+        // Handle the case of invalid login credentials
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title:
+            "Wrong email or password. Please check your password or email and try again.",
+          showConfirmButton: true,
+        });
+        e.target.reset();
+      } else {
+        // Handle other errors, e.g., network issues or server problems
+        console.error("Login failed:", error);
+      }
+    }
   };
 
   return (
