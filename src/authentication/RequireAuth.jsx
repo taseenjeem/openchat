@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { getAuth } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import app from "../authentication/firebase.init";
 import { Navigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import Loading from "./Loading";
+import app from "./firebase.init";
+import Loading from "../components/Loading";
 
 const RequireAuth = ({ children }) => {
   const auth = getAuth(app);
