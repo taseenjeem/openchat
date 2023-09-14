@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   getAuth,
+  sendEmailVerification,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
@@ -57,6 +58,7 @@ const Signup = () => {
 
     if (userPassword === confirmPassword) {
       try {
+        // Create a new user account with email and password
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           userEmail,
@@ -64,35 +66,41 @@ const Signup = () => {
         );
         const user = userCredential.user;
 
+        // Send email verification
+        await sendEmailVerification(user);
+
         // Update the user's displayName
         await updateProfile(user, {
           displayName: userName,
         });
 
+        // Display a success message to the user
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Account created successfully",
+          title:
+            "Account created successfully. Check your email for verification.",
           showConfirmButton: false,
           timer: 1500,
         });
 
+        // Reset the form
         e.target.reset();
       } catch (error) {
         if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          // Handle the case where the email is already in use
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "This email is already in use. Try with different email",
+            title: "This email is already in use. Try with a different email",
             showConfirmButton: true,
           });
           e.target.reset();
-        }
-
-        if (
+        } else if (
           error.message ===
           "Firebase: Password should be at least 6 characters (auth/weak-password)."
         ) {
+          // Handle the case where the password is too weak
           Swal.fire({
             position: "center",
             icon: "error",
@@ -100,9 +108,13 @@ const Signup = () => {
             showConfirmButton: true,
           });
           e.target.reset();
+        } else {
+          // Log other errors to the console
+          console.log(error);
         }
       }
     } else {
+      // Handle the case where the passwords do not match
       Swal.fire({
         position: "center",
         icon: "error",
