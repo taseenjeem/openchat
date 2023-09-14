@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import "./index.css";
+import App from "./App";
 // Importing the react-router-dom
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
@@ -13,30 +13,39 @@ import PasswordRecovery from "./pages/PasswordRecovery.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "create-new-account",
+        element: <Signup />,
+      },
+      {
+        path: "password-recovery",
+        element: <PasswordRecovery />,
+      },
+    ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/create-new-account",
-    element: <Signup />,
-  },
-  {
-    path: "/password-recovery",
-    element: <PasswordRecovery />,
-  },
+
   {
     path: "*",
-    element: <Login />,
+    element: <div>this is error page</div>,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

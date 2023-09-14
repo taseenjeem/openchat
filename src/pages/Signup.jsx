@@ -107,7 +107,7 @@ const Signup = () => {
             </form>
             <div className="divider">OR</div>
             <button className="btn btn-outline capitalize w-full">
-              <FcGoogle className="text-xl" /> Continue with Google
+              <FcGoogle className="text-xl" /> Sign up with Google
             </button>
           </div>
         </div>

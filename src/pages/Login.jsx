@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   return (
@@ -68,6 +69,10 @@ const Login = () => {
             >
               Forgot Password ?
             </Link>
+            <div className="divider">OR</div>
+            <button className="btn btn-outline capitalize w-full">
+              <FcGoogle className="text-xl" /> Login with Google
+            </button>
           </div>
         </div>
       </div>
