@@ -1,11 +1,6 @@
-import { getAuth } from "firebase/auth";
 import React from "react";
-import app from "../authentication/firebase.init";
 
 const ChatLayout = () => {
-  const auth = getAuth(app);
-  console.log(auth.currentUser);
-
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
