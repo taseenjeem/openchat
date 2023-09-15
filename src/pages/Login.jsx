@@ -26,7 +26,7 @@ const Login = () => {
 
   // Check if the user is already authenticated
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const isAuthenticated = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is authenticated
         setUser(user);
@@ -39,7 +39,7 @@ const Login = () => {
     });
 
     // Clean up the subscription when the component unmounts
-    return () => unsubscribe();
+    return () => isAuthenticated();
   }, [auth, navigate]);
 
   // Handle login
@@ -75,7 +75,9 @@ const Login = () => {
         e.target.reset();
       }
     } catch (error) {
-      if (error.code === "auth/invalid-login-credentials") {
+      if (
+        error.message === "Firebase: Error (auth/invalid-login-credentials)."
+      ) {
         // Handle the case of invalid login credentials
         Swal.fire({
           position: "center",
@@ -92,8 +94,6 @@ const Login = () => {
     } finally {
       // Stop loading, whether login succeeds or fails
       setLoading(false);
-      // Finally navigate to conversation route after successful login
-      navigate("/conversations");
     }
   };
 
