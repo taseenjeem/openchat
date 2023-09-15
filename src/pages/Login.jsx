@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import { FcGoogle } from "react-icons/fc";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import app from "../authentication/firebase.init";
 import Swal from "sweetalert2";
 import Loading from "../components/Loading";
 
 const Login = () => {
   // Loading state
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Handle  users for redirecting if a person already logged in
+  const [user, setUser] = useState(null);
 
   // Navigate after login
   const navigate = useNavigate();
 
   // Import the app from firebase.init.js
   const auth = getAuth(app);
+
+  // Check if the user is already authenticated
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is authenticated
+        setUser(user);
+        setLoading(false);
+        navigate("/conversations"); // Redirect after authentication
+      } else {
+        setUser(null);
+        setLoading(false);
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, [auth, navigate]);
 
   // Handle login
   const handleLogin = async (e) => {
@@ -74,7 +99,7 @@ const Login = () => {
 
   return (
     <>
-      {loading ? (
+      {loading || user ? (
         <Loading />
       ) : (
         <div className="h-screen md:flex md:px-0 px-4">

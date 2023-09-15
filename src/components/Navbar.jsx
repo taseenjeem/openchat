@@ -24,6 +24,7 @@ const Navbar = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate("/login");
       })
       .catch((error) => {
         console.log(error);

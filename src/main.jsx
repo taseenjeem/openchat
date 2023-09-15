@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import PasswordRecovery from "./pages/PasswordRecovery.jsx";
@@ -16,29 +14,19 @@ import RequireAuth from "./authentication/RequireAuth";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "home",
-        element: <Home />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "create-new-account",
-        element: <Signup />,
-      },
-      {
-        path: "password-recovery",
-        element: <PasswordRecovery />,
-      },
-    ],
+    element: <Login />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/create-new-account",
+    element: <Signup />,
+  },
+  {
+    path: "/password-recovery",
+    element: <PasswordRecovery />,
   },
   {
     path: "/conversations",
